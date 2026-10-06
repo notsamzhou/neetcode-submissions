@@ -1,0 +1,28 @@
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+
+        maxLen = max([len(word) for word in wordDict])
+
+        # dp(i) = OR_{i - maxLen < j <= i} dp(j-1) and s[j:i + 1] in wordDict
+
+        cache = {}
+        def dp(i):
+
+            if i < 0:
+
+                return True
+
+            if i in cache:
+                return cache[i]
+
+            res = False
+            for j in range(i - maxLen + 1, i + 1):
+                if s[j:i + 1] in wordDict:
+
+                    res = res or dp(j - 1)
+
+            cache[i] = res
+            return cache[i]
+
+        return dp(len(s) - 1)
+        
